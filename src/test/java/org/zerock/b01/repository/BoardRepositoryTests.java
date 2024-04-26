@@ -140,4 +140,17 @@ public class BoardRepositoryTests {
 
         boardRepository.search1(pageable);
     }
+
+    @Test
+    public void testSearchAll() {
+
+        String[] types = {"t","c","w"};
+
+        String keyword = "1";
+
+        Pageable pageable = PageRequest.of(1,10,Sort.by("bno").descending());
+
+        Page<Board> result = boardRepository.searchAll(types, keyword, pageable);
+
+    }
 }

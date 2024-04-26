@@ -14,4 +14,7 @@ public interface BoardSearch {
 
     Page<Board> search1(Pageable pageable);
 
+    // title과 content 의 내용을 검색...
+    Page<Board> searchAll(String[] types, String keyword, Pageable pageable);
+
 }

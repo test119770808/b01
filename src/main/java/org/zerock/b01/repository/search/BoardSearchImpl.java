@@ -1,5 +1,6 @@
 package org.zerock.b01.repository.search;
 
+import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.JPQLQuery;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -28,9 +29,19 @@ public class BoardSearchImpl extends QuerydslRepositorySupport implements BoardS
         // 1. Q도메인 객체 생성
         QBoard board = QBoard.board;
 
+        // 2. Query 작성....
         JPQLQuery<Board> query = from(board);   // select .. from board
 
-        query.where(board.title.contains("1")); // where title like ...
+        // BooleanBuilder() 사용
+        BooleanBuilder booleanBuilder = new BooleanBuilder(); // (
+
+        booleanBuilder.or(board.title.contains("11"));   // title like ...
+        booleanBuilder.or(board.content.contains("11")); // content like ...
+
+//        query.where(board.title.contains("1")); // where title like ...
+
+        query.where(booleanBuilder);                     // )
+        query.where(board.bno.gt(0L));              // bno > 0
 
         // paging
         this.getQuerydsl().applyPagination(pageable, query);
@@ -38,6 +49,51 @@ public class BoardSearchImpl extends QuerydslRepositorySupport implements BoardS
         List<Board> title = query.fetch();      // JPQLQuery에 대한 실행
 
         long count = query.fetchCount();        // 쿼리 실행....
+
+        return null;
+    }
+
+    @Override
+    public Page<Board> searchAll(String[] types, String keyword, Pageable pageable) {
+
+        // 1. Qdomain 객체 생성
+        QBoard board = QBoard.board;
+
+        // 2. QL 작성...
+        JPQLQuery<Board> query = from(board);  // select ... from board
+
+        if( ( types != null && types.length > 0) && keyword != null ) {
+            // 검색 조건과 키워드가 있는 경우....
+
+            BooleanBuilder booleanBuilder = new BooleanBuilder(); // (
+
+            for(String type: types) {
+                switch (type) {
+                    case "t":
+                        booleanBuilder.or(board.title.contains(keyword));  // title like concat('%',keyword,'%')
+                        break;
+                    case "c":
+                        booleanBuilder.or(board.content.contains(keyword));// content like concat('%',keyword,'%')
+                        break;
+                    case "w":
+                        booleanBuilder.or(board.writer.contains(keyword)); // writer like concat('%',keyword,'%')
+                        break;
+                }
+            }  // for end
+
+            query.where(booleanBuilder);  // )
+
+        }// if end
+
+        // bno > 0
+        query.where(board.bno.gt(0L));
+
+        // paging...
+        this.getQuerydsl().applyPagination(pageable, query);
+
+        List<Board> list = query.fetch();
+
+        long count = query.fetchCount();
 
         return null;
     }

@@ -66,3 +66,6 @@ sourceSets {
         }
     }
 }
+
+// compile 정리...
+compileJava.dependsOn('clean')
