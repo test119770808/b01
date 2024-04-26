@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <title>Thymeleaf 출력 테스트</title>
+    </head>
+    <body>
+        <h4>EL표기법 - [[${list}]]</h4>
+        <hr>
+        <h4 th:text="'Thymeleaf 표기 - '+${list}"></h4>
+
+        <!-- Thymeleaf 주석 처리...  -->
+        <!--/*
+            주석 영역!!!
+            처리하는 이유는 thymeleaf로 파싱처리될 때 삭제처리하기 때문에....
+        */-->
+        <!--/*  <h3 th:each="${sos}">SOS</h3> */-->
+        <!--/*
+        <div>
+            <h1>AAAAA</h1>
+        </div>
+        */-->
+
+        <h5>변수의 선언</h5>
+        <!-- th:with를 이용한 변수 선언 -->
+        <div th:with="num1 = ${0}, num2 = ${20}">
+            <h4 th:text="${num1 + num2}"></h4>
+        </div>
+
+        <!--/*
+            반복문과 제어문 처리....
+            반복문 처리 방식 2가지
+            1. 반복이 필요한 태그에 "th:each"를 적용하는 방법
+            2. <th:block>이라는 별도의 태그를 이용하는 방법
+         */-->
+        <!-- 반복문 -->
+        <!-- th:each -->
+        <h5>반복문 및 status 변수</h5>
+        <ul>
+            <li th:each="str: ${list}" th:text="${str}"></li>
+        </ul>
+        <!-- th:block -->
+        <ul>
+            <th:block th:each="str: ${list}">
+                <li>[[${str}]]</li>
+            </th:block>
+        </ul>
+
+        <!-- 반복문의 status 변수 : index, count, size, 반환타입이 boolean - first, last, odd, even 등을 이용할 수 있음.-->
+        <ul>
+            <li th:each="str,status: ${list}">
+                [[${status.even}]] -- [[${str}]]
+            </li>
+        </ul>
+
+        <!--
+          제어문... th:if, th:unless, th:switch
+           th:if, th:unless 별도 사용이 가능함....
+         -->
+        <h5>th:if, th:unless </h5>
+        <ul>
+            <li th:each="str,status: ${list}">
+                <span th:if="${status.odd}">ODD -- [[${status.count}]] -- [[${str}]]</span>
+                <span th:unless="${status.odd}">EVEN -- [[${status.count}]] -- [[${str}]]</span>
+            </li>
+        </ul>
+
+        <h5>?를 이용한 이항 삼항 연산 </h5>
+        <!-- ?를 이용한 이항 혹은 삼항 연산처리....  -->
+        <ul>
+            <li th:each="str,status: ${list}">
+                <span th:text="${status.odd} ? 'ODD ---'+${str}" ></span>
+            </li>
+        </ul>
+
+        <ul>
+            <li th:each="str,status: ${list}">
+                <span th:text="${status.odd} ? 'ODD ---'+${str} : 'EVEN ---'+${str}" ></span>
+            </li>
+        </ul>
+
+        <h5>th:switch ~ th:case</h5>
+        <!-- th:switch는 th:case와 같이 사용해서 Switch 문을 처리할 때 사용 -->
+        <ul>
+            <li th:each="str,status: ${list}">
+                <th:block th:switch="${status.index % 3}">
+                    <span th:case="0">0</span>
+                    <span th:case="1">1</span>
+                    <span th:case="2">2</span>
+                </th:block>
+            </li>
+        </ul>
+
+        <h5>Thymeleaf 링크 처리... </h5>
+        <!-- JSP를 이용할 때에 "/"로 시작하는 것과 특정 프로젝트의 경로로 시작하는 모든 것을 고려해야하는 것이 번거롭다.
+         하지만, Thymeleaf는 '@'으로 링크를 작성하기만 하면 됩니다. -->
+        <a th:href="@{/hello}">Go to /hello</a><br>
+
+        <!-- 링크의 쿼리 스트링 처리 -->
+        <a th:href="@{/hello(name='AAA', age=16)}">Go to /hello</a><br>
+        <!--url인코딩과 공백문자를 처리해줌 -->
+        <a th:href="@{/hello(name='한글문자', age= 16)}">Go to /hello</a><br>
+
+        <a th:href="@{/hello(types=${ { 'AA', 'BB', 'CC'} }, age= 16)}">Go to /hello</a><br>
+
+    </body>
+</html>
