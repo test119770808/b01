@@ -3,6 +3,7 @@ package org.zerock.b01.repository.search;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.JPQLQuery;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import org.zerock.b01.domain.Board;
@@ -95,6 +96,8 @@ public class BoardSearchImpl extends QuerydslRepositorySupport implements BoardS
 
         long count = query.fetchCount();
 
-        return null;
+        // Page<T> 형식으로 반환 : Page<Board>
+        // PageImpl을 통해서 반환 : (list - 실제 목록 데이터, pageable, total -전체 개수)
+        return new PageImpl<>(list,pageable,count);
     }
 }
