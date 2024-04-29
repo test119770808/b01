@@ -6,6 +6,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.zerock.b01.dto.BoardDTO;
+import org.zerock.b01.dto.PageRequestDTO;
+import org.zerock.b01.dto.PageResponseDTO;
 
 import java.util.NoSuchElementException;
 
@@ -21,8 +23,8 @@ public class BoardServiceTests {
         log.info(boardService.getClass().getName());
 
         BoardDTO boardDTO = BoardDTO.builder()
-                .title("Sample test.....")
-                .content("Sample Content......")
+                .title("Sample1 test.....")
+                .content("Sample1 Content......")
                 .writer("user1")
                 .build();
         long bno = boardService.register(boardDTO);
@@ -61,7 +63,18 @@ public class BoardServiceTests {
         Assertions.assertThrows(NoSuchElementException.class,
                 () -> boardService.readOne(bno));
 
+    }
 
+    @Test
+    public void testList() {
+        PageRequestDTO pageRequestDTO = PageRequestDTO.builder()
+                .type("tcw")
+                .keyword("1")
+                .page(1)
+                .size(10)
+                .build();
+        PageResponseDTO<BoardDTO> responseDTO = boardService.list(pageRequestDTO);
+        log.info(responseDTO);
     }
 
 }
