@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/basic.html}">
+
+<div layout:fragment="content">
+
+    <!-- 검색 화면 추가 -->
+    <div class="row mt-3">
+        <form action="/board/list" method="get">
+            <div class="col">
+                <input type="hidden" name="size" th:value="${pageRequestDTO.size}">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <select class="form-select" name="type">
+                            <option value="">---</option>
+                            <option value="t" th:selected="${pageRequestDTO.type == 't'}">제목</option>
+                            <option value="c" th:selected="${pageRequestDTO.type == 'c'}">내용</option>
+                            <option value="w" th:selected="${pageRequestDTO.type == 'w'}">작성자</option>
+                            <option value="tc" th:selected="${pageRequestDTO.type == 'tc'}">제목 내용</option>
+                            <option value="tcw" th:selected="${pageRequestDTO.type == 'tcw'}">제목 내용 작성자</option>
+                        </select>
+                    </div>
+                    <input type="text" class="form-control" name="keyword" th:value="${pageRequestDTO.keyword}">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary searchBtn" type="submit">Search</button>
+                        <button class="btn btn-outline-secondary clearBtn" type="button">Clear</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- 목록 정보 출력 -->
+    <div class="row mt-3">
+        <div class="col">
+            <div class="card">
+                <div class="card-header">
+                    Board List
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">Board List</h5>
+
+                    <table class="table">
+                        <thead> <!-- 테이블 목록 -->
+                        <tr>
+                            <th scope="col">Bno</th>
+                            <th scope="col">Title</th>
+                            <th scope="col">Writer</th>
+                            <th scope="col">RegDate</th>
+                        </tr>
+                        </thead>
+                        <tbody>  <!-- 테이블에 실제 출력 데이터 -->
+                        <tr th:each="dto:${responseDTO.dtoList}" >
+                            <th scope="row">[[${dto.bno}]]</th>
+                            <td>
+                                [[${dto.title}]]
+                            </td>
+                            <td>[[${dto.writer}]]</td>
+                            <!--/* #temporals 유틸리티 객체 : 데이터 포맷 유틸리티  */-->
+                            <td>[[${#temporals.format(dto.regDate, 'yyyy-MM-dd')}]]</td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="float-end">
+                        <ul class="pagination flex-wrap">
+                            <li class="page-item" th:if="${responseDTO.prev}">
+                                <a class="page-link" th:data-num="${responseDTO.start -1 }">
+                                   Previous
+                                </a>
+                            </li>
+
+                            <th:block th:each="i : ${#numbers.sequence(responseDTO.start, responseDTO.end)}">
+                                <li th:class="${responseDTO.page == i} ? 'page-item active':'page-item'">
+                                    <a class="page-link" th:data-num="${i}">[[${i}]]</a>
+                                </li>
+                            </th:block>
+
+
+                            <li class="page-item" th:if="${responseDTO.next}">
+                                <a class="page-link" th:data-num="${responseDTO.end + 1}">
+                                    Next
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+
+                </div> <!-- end card body -->
+            </div> <!-- end card -->
+        </div> <!-- end col -->
+    </div> <!-- end row -->
+
+</div>
+
+<script layout:fragment="script" th:inline="javascript">
+    // 이벤트 처리...
+    // 페이지 번호 클릭시 검색 창에 있는 form 의 hidden으로 page추가 후 submit 처리...
+    // Clear 버튼 누를 경우... 검색 조건 없이 /board/list 호출
+    console.log("script..............")
+
+    document.querySelector(".pagination").addEventListener("click", function (e) {
+        e.preventDefault()
+        e.stopPropagation()
+
+        const target = e.target
+
+        // console.log(target)
+        if(target.tagName !== 'A') {  // A태그만 사용!!!
+            return
+        }
+
+        const num = target.getAttribute("data-num")
+        const formObj = document.querySelector("form")
+        formObj.innerHTML += `<input type='hidden' name='page' value='${num}'>`
+        formObj.submit()
+
+    }, false)
+
+    document.querySelector(".clearBtn").addEventListener("click", function (e) {
+        e.preventDefault()
+        e.stopPropagation()
+
+        self.location = '/board/list'
+
+    }, false)
+</script>
+
+</html>
