@@ -34,6 +34,8 @@ public class PageResponseDTO<E> {
         this.page = pageRequestDTO.getPage();
         this.size = pageRequestDTO.getSize();
 
+        this.dtoList = dtoList;
+
         this.end = (int)(Math.ceil(this.page / 10.0)) * 10; // 화면에 표시할 페이지번호 갯수...
         this.start = this.end - 9; // 화면에서 시작번호
         int last = (int)(Math.ceil((total/(double)size))); // 데이터 개수로 계산한 마지막 페이지 번호
