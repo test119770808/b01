@@ -91,7 +91,24 @@
         </div> <!-- end col -->
     </div> <!-- end row -->
 
-</div>
+    <div class="modal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">게시글 등록 성공</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>'[[${result}]]'번 게시글 성공적으로 등록되었습니다.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <!--<button type="button" class="btn btn-primary">Save changes</button>-->
+                </div>
+            </div>
+        </div>
+    </div>  <!-- end modal -->
+</div> <!-- end layout fragment -->
 
 <script layout:fragment="script" th:inline="javascript">
     // 이벤트 처리...
@@ -127,6 +144,14 @@
 
     }, false)
 
+    //show modal
+    const result = [[${result}]]
+
+    const modal = new bootstrap.Modal(document.querySelector(".modal"))
+
+    if(result) {
+        modal.show()
+    }
 </script>
 
 </html>
