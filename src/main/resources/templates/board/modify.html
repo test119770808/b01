@@ -18,19 +18,19 @@
                     <form th:action="@{/board/modify}" method="post" id="f1">
                         <div class="input-group mb-3">
                             <span class="input-group-text">Bno</span>
-                            <input type="text" class="form-control" th:value="${dto.bno}" readonly>
+                            <input type="text" class="form-control" name="bno" th:value="${dto.bno}" readonly>
                         </div>
                         <div class="input-group mb-3">
                             <span class="input-group-text">Title</span>
-                            <input type="text" class="form-control" th:value="${dto.title}">
+                            <input type="text" class="form-control" name="title" th:value="${dto.title}">
                         </div>
                         <div class="input-group mb-3">
                             <span class="input-group-text">Content</span>
-                            <textarea class="form-control col-sm-5" rows="5">[[${dto.content}]]</textarea>
+                            <textarea class="form-control col-sm-5" name="content" rows="5">[[${dto.content}]]</textarea>
                         </div>
                         <div class="input-group mb-3">
                             <span class="input-group-text">Writer</span>
-                            <input type="text" class="form-control" th:value="${dto.writer}" readonly>
+                            <input type="text" class="form-control" name="writer" th:value="${dto.writer}" readonly>
                         </div>
                         <div class="input-group mb-3">
                             <span class="input-group-text">RegDate</span>
@@ -56,6 +56,31 @@
 </div>
 
 <script layout:fragment="script" th:inline="javascript">
+    const errors = [[${errors}]]
+    console.log(errors)
+
+    let errorMsg = ''
+
+    if(errors) {
+        for(let i = 0 ; i < errors.length; i++ ) {
+            errorMsg += `${errors[i].field}으(는) ${errors[i].code} \n`
+        }
+        history.replaceState({}, null, null)
+        alert(errorMsg)
+    }
+
+    const link = [[${pageRequestDTO.getLink()}]]
+    const formObj = document.querySelector("#f1")
+
+    document.querySelector(".modBtn").addEventListener("click", function (e) {
+        e.preventDefault()
+        e.stopPropagation()
+
+        formObj.action = `/board/modify?${link}`
+        formObj.method = 'post'
+        formObj.submit()
+
+    }, false)
 
 </script>
 
