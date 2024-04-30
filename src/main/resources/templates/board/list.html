@@ -50,11 +50,11 @@
                             <th scope="col">RegDate</th>
                         </tr>
                         </thead>
-                        <tbody>  <!-- 테이블에 실제 출력 데이터 -->
+                        <tbody th:with="link = ${pageRequestDTO.getLink()}">  <!-- 테이블에 실제 출력 데이터 -->
                         <tr th:each="dto:${responseDTO.dtoList}" >
                             <th scope="row">[[${dto.bno}]]</th>
                             <td>
-                                [[${dto.title}]]
+                                <a th:href="|@{/board/read(bno = ${dto.bno})}&${link}|">[[${dto.title}]]</a>
                             </td>
                             <td>[[${dto.writer}]]</td>
                             <!--/* #temporals 유틸리티 객체 : 데이터 포맷 유틸리티  */-->

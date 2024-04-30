@@ -42,9 +42,13 @@
             <input type="text" class="form-control" th:value="${#temporals.format(dto.modDate,'yyyy-MM-dd HH:mm:ss')}" readonly>
           </div>
           <div class="my-4">
-            <div class="float-end">
-              <button type="button" class="btn btn-primary ">List</button>
-              <button type="button" class="btn btn-secondary ">Modify</button>
+            <div class="float-end" th:with="link = ${pageRequestDTO.getLink()}">
+              <a th:href="|@{/board/list}?${link}|" class="text-decoration-none">
+                <button type="button" class="btn btn-primary ">List</button>
+              </a>
+              <a th:href="|@{/board/modify(bno=${dto.bno})}&${link}|" class="text-decoration-none">
+                <button type="button" class="btn btn-secondary ">Modify</button>
+              </a>
             </div>
           </div>
 
