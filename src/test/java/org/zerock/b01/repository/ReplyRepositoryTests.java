@@ -1,9 +1,11 @@
 package org.zerock.b01.repository;
 
+import jakarta.transaction.Transactional;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -44,12 +46,19 @@ public class ReplyRepositoryTests {
 //        replyRepository.save(reply);
     }
 
+    @Transactional  // 쿼리가 다 성공해야 성공 처리...
     @Test
     public void testBoardReplies() {
         // 실제 게시물 번호
         Long bno = 208L;
 
         Pageable pageable = PageRequest.of(0, 10, Sort.by("rno").descending());
+
+        Page<Reply> result = replyRepository.listOfBoard(bno, pageable);
+
+        result.getContent().forEach(reply -> {
+            log.info(reply);
+        });
 
 
     }

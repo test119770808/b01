@@ -3,6 +3,7 @@ package org.zerock.b01.repository.search;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.zerock.b01.domain.Board;
+import org.zerock.b01.dto.BoardListReplyCountDTO;
 
 /*
     1. Querydsl과 기존의 JPARepository와 연동 작업 설정을 위한 인터페이스 생성
@@ -16,5 +17,9 @@ public interface BoardSearch {
 
     // title과 content 의 내용을 검색...
     Page<Board> searchAll(String[] types, String keyword, Pageable pageable);
+
+    Page<BoardListReplyCountDTO> searchWithReplyCount(String[] types,
+                                                      String keyword,
+                                                      Pageable pageable);
 
 }

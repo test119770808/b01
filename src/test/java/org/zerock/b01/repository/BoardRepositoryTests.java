@@ -9,6 +9,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.zerock.b01.domain.Board;
+import org.zerock.b01.dto.BoardListReplyCountDTO;
 
 import javax.swing.text.html.Option;
 import java.util.List;
@@ -157,5 +158,19 @@ public class BoardRepositoryTests {
         log.info("페이지 번호 : "+result.getNumber());
         log.info("이전 페이지 : "+result.hasPrevious());
         log.info("다음 페이지 "+result.hasNext());
+    }
+
+    @Test
+    public void testSearchWithReplyCount() {
+
+        String[] types = {"t","c","w"};
+
+        String keyword = "1";
+
+        Pageable pageable = PageRequest.of(1,10,Sort.by("bno").descending());
+
+        boardRepository.searchWithReplyCount(types, keyword, pageable);
+
+
     }
 }

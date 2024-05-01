@@ -11,7 +11,7 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString(exclude = "board")  // 참조하는 객체를 사용하지 않게 하기 위해서 exclude로 board를 제외
+@ToString//(exclude = "board")  // 참조하는 객체를 사용하지 않게 하기 위해서 exclude로 board를 제외
 public class Reply extends BaseEntity{
 
     @Id
