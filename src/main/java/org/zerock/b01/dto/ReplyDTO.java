@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.zerock.b01.domain.Board;
 
 import java.time.LocalDateTime;
 
@@ -25,6 +26,5 @@ public class ReplyDTO {
     private String replyer;
 
     private LocalDateTime regDate, modDate;
-
 
 }

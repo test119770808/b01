@@ -11,7 +11,7 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString//(exclude = "board")  // 참조하는 객체를 사용하지 않게 하기 위해서 exclude로 board를 제외
+@ToString(exclude = "board")  // 참조하는 객체를 사용하지 않게 하기 위해서 exclude로 board를 제외
 public class Reply extends BaseEntity{
 
     @Id
@@ -25,5 +25,14 @@ public class Reply extends BaseEntity{
 
     private String replyer;
 
+    public void changeText(String text) {
+        this.replyText = text;
+    }
+
+
+    // board 값 설정을 위해서 -> bno를 받아서 생성...
+    public void setBoard(Long bno) {
+        this.board = Board.builder().bno(bno).build();
+    }
 
 }

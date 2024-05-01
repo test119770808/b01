@@ -110,10 +110,10 @@ public class BoardSearchImpl extends QuerydslRepositorySupport implements BoardS
         QBoard board = QBoard.board;
         QReply reply = QReply.reply;
 
-        JPQLQuery<Board> query = from(board);
-        query.leftJoin(reply).on(reply.board.eq(board));
+        JPQLQuery<Board> query = from(board);  // select * from board
+        query.leftJoin(reply).on(reply.board.eq(board));  // select * from board left join reply on reply.board_bno=board.bno
 
-        query.groupBy(board);  // 게시물 당 처리...
+        query.groupBy(board);  // 게시물 당 처리...      // group by
 
         if( ( types != null && types.length > 0) && keyword != null ) {
             // 검색 조건과 키워드가 있는 경우....
@@ -159,4 +159,5 @@ public class BoardSearchImpl extends QuerydslRepositorySupport implements BoardS
 
         return new PageImpl<>(dtoList, pageable, count);
     }
+
 }

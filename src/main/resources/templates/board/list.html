@@ -60,6 +60,7 @@
                             <th scope="row">[[${dto.bno}]]</th>
                             <td>
                                 <a th:href="|@{/board/read(bno = ${dto.bno})}&${link}|">[[${dto.title}]]</a>
+                                <span class="badge progress-bar-success" style="background-color:#0a53be">[[${dto.replyCount}]]</span>
                             </td>
                             <td>[[${dto.writer}]]</td>
                             <!--/* #temporals 유틸리티 객체 : 데이터 포맷 유틸리티  */-->
