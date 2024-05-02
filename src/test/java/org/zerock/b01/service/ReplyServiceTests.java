@@ -42,4 +42,10 @@ public class ReplyServiceTests {
         PageResponseDTO<ReplyDTO> result =  replyService.getListOfBoard(bno, pageRequestDTO);
         result.getDtoList().forEach(replyDTO -> log.info(replyDTO));
     }
+
+    @Test
+    public void testDelete() {
+        Long rno = 1000L;
+        replyService.remove(rno);
+    }
 }

@@ -60,6 +60,33 @@ public class ReplyController {
         return responseDTO;
     }
 
+    @Operation(summary = "Read Reply - GET방식으로 댓글 조회")
+    @GetMapping("/{rno}")
+    public ReplyDTO getReplyDTO(@PathVariable("rno") Long rno) {
+        ReplyDTO replyDTO = replyService.read(rno);
+        return replyDTO;
+    }
 
+    @Operation(summary = "Delete Reply - DELETE 메서드를 이용한 댓글 삭제")
+    @DeleteMapping("/{rno}")
+    public Map<String, Long> remove(@PathVariable("rno") Long rno) {
+        replyService.remove(rno);
 
+        Map<String, Long> resultMap = new HashMap<>();
+        resultMap.put("rno", rno);
+
+        return resultMap;
+    }
+
+    @Operation(summary = "Modify Reply - PUT 방식으로 댓글 수정")
+    @PutMapping(value = "/{rno}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Long> modify(
+            @PathVariable("rno") Long rno,
+            @RequestBody ReplyDTO replyDTO){
+        replyDTO.setBno(rno);   // 번호 일치
+        replyService.modify(replyDTO);
+        Map<String, Long> resultMap = new HashMap<>();
+        resultMap.put("rno", rno);
+        return resultMap;
+    }
 }
