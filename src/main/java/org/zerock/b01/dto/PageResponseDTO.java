@@ -33,6 +33,7 @@ public class PageResponseDTO<E> {
         }
         this.page = pageRequestDTO.getPage();
         this.size = pageRequestDTO.getSize();
+        this.total = total;
 
         this.dtoList = dtoList;
 

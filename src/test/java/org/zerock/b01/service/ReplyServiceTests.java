@@ -40,6 +40,7 @@ public class ReplyServiceTests {
         Long bno = 208L;
         PageRequestDTO pageRequestDTO = PageRequestDTO.builder().build();
         PageResponseDTO<ReplyDTO> result =  replyService.getListOfBoard(bno, pageRequestDTO);
+        log.info("토탈 값 확인 : "+result.getTotal());
         result.getDtoList().forEach(replyDTO -> log.info(replyDTO));
     }
 

@@ -55,7 +55,7 @@ public class ReplyRepositoryTests {
         Pageable pageable = PageRequest.of(0, 10, Sort.by("rno").descending());
 
         Page<Reply> result = replyRepository.listOfBoard(bno, pageable);
-
+        log.info("게시물의 댓글 수 : "+result.getTotalElements());
         result.getContent().forEach(reply -> {
             log.info(reply);
         });
@@ -66,6 +66,11 @@ public class ReplyRepositoryTests {
     @Test
     public void testDelete() {
         replyRepository.deleteById(99L);
+    }
+
+    @Test
+    public void testTotal() {
+        log.info("count : "+replyRepository.count());
     }
 
 }

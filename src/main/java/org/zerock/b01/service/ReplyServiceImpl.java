@@ -76,7 +76,7 @@ public class ReplyServiceImpl implements ReplyService {
             replyDTO.setBno(reply.getBoard().getBno());
             return replyDTO;
         }).collect(Collectors.toList());
-
+//        log.info("Reply Total(ReplyServiceImpl) : "+result.getTotalElements());
         return PageResponseDTO.<ReplyDTO>withAll()
                 .pageRequestDTO(pageRequestDTO)
                 .dtoList(dtoList)

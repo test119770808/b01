@@ -75,7 +75,32 @@
     </div>
   </div>
 
+  <!-- Modal 창 -->
+  <div class="modal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Register Reply</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="input-group mb-3">
+            <span class="input-group-text">Reply Text</span>
+            <input type="text" class="form-control replyText">
+          </div>
+          <div class="input-group mb-3">
+            <span class="input-group-text">Replyer</span>
+            <input type="text" class="form-control replyer">
+          </div>
 
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary registerBtn">Register</button>
+          <button type="button" class="btn btn-outline-dark closeRegisterBtn">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>  <!-- end modal -->
   <!-- reply를 처리하기 위한 javascript 라이브러리 불러오기...  -->
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   <script src="/js/reply.js"></script>
@@ -142,8 +167,10 @@
   }
 
   function printReplies(page, size, goLast) {
+    console.log("printReplies : "+bno, page, size)
     getList({bno, page, size, goLast}).then(
             data => {
+              console.log("total : "+data.total)
               printList(data.dtoList)  //목록 처리
               printPages(data)         //페이지 처리
               // console.log(data)
@@ -153,7 +180,7 @@
     })
   }
   //함수 호출
-  printReplies(1,10)
+  printReplies(2,10, true)
 
 
 </script>
