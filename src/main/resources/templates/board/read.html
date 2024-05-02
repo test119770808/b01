@@ -113,10 +113,39 @@
     replyList.innerHTML = str
   }
 
+  function printPages(data) {   //댓글 페이지 목록 출력
+
+    //pagination
+    let pageStr = '';
+
+    //이전 버튼
+    if(data.prev) {
+      pageStr += `<li class="page-item">
+                    <a class="page-link" data-page="${data.start - 1}">PREV</a>
+                 </li>`
+    }
+
+    //페이지 번호...
+    for (let i = data.start; i <= data.end; i++ ){
+      pageStr += `<li class="page-item ${i == data.page? "active":""}">
+                    <a class="page-link" data-page="${i}">${i}</a>
+                </li>`
+    }
+
+    // 다음 버튼
+    if(data.next) {
+      pageStr += `<li class="page-item">
+                    <a class="page-link" data-page="${data.end + 1}">NEXT</a>
+                 </li>`
+    }
+    replyPaging.innerHTML = pageStr
+  }
+
   function printReplies(page, size, goLast) {
     getList({bno, page, size, goLast}).then(
             data => {
               printList(data.dtoList)  //목록 처리
+              printPages(data)         //페이지 처리
               // console.log(data)
             }
     ).catch(e => {
