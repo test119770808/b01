@@ -56,9 +56,76 @@
     </div> <!--end col -->
   </div><!--end row -->
 
+  <!-- 댓글 처리 영역 만들기...  -->
+  <div class="row mt-3">
+    <div class="col-md-12">
+      <div class="my-4">
+        <button class="btn btn-info addReplyBtn">ADD REPLY</button>
+      </div>
+      <ul class="list-group replyList">
+
+      </ul>
+    </div>
+  </div>
+  <div class="row mt-3">
+    <div class="col">
+      <ul class="pagination replyPaging">
+
+      </ul>
+    </div>
+  </div>
+
+
+  <!-- reply를 처리하기 위한 javascript 라이브러리 불러오기...  -->
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script src="/js/reply.js"></script>
+
 </div>
 
 <script layout:fragment="script" th:inline="javascript">
+
+  // // console.log(get1(bno))
+  // get1(bno).then(data => {  //정상적 값
+  //   console.log(data)
+  // }).catch(e =>{   // 실패,에러...
+  //   console.error(e)
+  // })
+
+  // 댓글 목록 처리...
+  const bno = [[${dto.bno}]]
+
+  const replyList = document.querySelector('.replyList')      // 댓글 목록 DOM
+  const replyPaging = document.querySelector('.replyPaging')  // 댓글 페이지 목록 DOM
+
+  function printList(dtoList) {
+    let str = '';
+
+    if(dtoList && dtoList.length > 0) {
+      for (const dto of dtoList) {
+        str +=`<li class="list-group-item d-flex replyItem">
+              <span class="col-2">${dto.rno}</span>
+              <span class="col-6" data-rno="${dto.rno}">${dto.replyText}</span>
+              <span class="col-2">${dto.replyer}</span>
+              <span class="col-2">${dto.regDate}</span>
+              </li>`
+      }
+    }
+    replyList.innerHTML = str
+  }
+
+  function printReplies(page, size, goLast) {
+    getList({bno, page, size, goLast}).then(
+            data => {
+              printList(data.dtoList)  //목록 처리
+              // console.log(data)
+            }
+    ).catch(e => {
+            console.log(e)
+    })
+  }
+  //함수 호출
+  printReplies(1,10)
+
 
 </script>
 
