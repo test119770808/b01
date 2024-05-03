@@ -75,7 +75,7 @@
     </div>
   </div>
 
-  <!-- Modal 창 -->
+  <!-- Modal 창 - registerModal -->
   <div class="modal registerModal" tabindex="-1">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -101,6 +101,29 @@
       </div>
     </div>
   </div>  <!-- end modal -->
+
+  <!-- Modal 창 - modifyModal -->
+  <div class="modal modifyModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title replyHeader"></h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="input-group mb-3">
+            <span class="input-group-text">Reply Text</span>
+            <input type="text" class="form-control modifyText">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-info modifyBtn">Modify</button>
+          <button type="button" class="btn btn-danger removeBtn">Remove</button>
+          <button type="button" class="btn btn-outline-dark closeModifyBtn">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>  <!-- end modify modal -->
   <!-- reply를 처리하기 위한 javascript 라이브러리 불러오기...  -->
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   <script src="/js/reply.js"></script>
@@ -167,10 +190,10 @@
   }
 
   function printReplies(page, size, goLast) {
-    console.log("printReplies : "+bno, page, size)
+    // console.log("printReplies : "+bno, page, size)
     getList({bno, page, size, goLast}).then(
             data => {
-              console.log("total : "+data.total)
+              // console.log("total : "+data.total)
               printList(data.dtoList)  //목록 처리
               printPages(data)         //페이지 처리
               // console.log(data)
@@ -234,6 +257,41 @@
     page = pageNum
     printReplies(page, size)
   }, false)
+
+  //modifyModal
+  const modifyModal = new bootstrap.Modal(document.querySelector(".modifyModal"))
+
+  const replyHeader = document.querySelector(".replyHeader")
+  const modifyText = document.querySelector(".modifyText")
+  const modifyBtn = document.querySelector(".modifyBtn")
+  const removeBtn = document.querySelector(".removeBtn")
+  const closeModifyBtn = document.querySelector(".closeModifyBtn")
+
+  // 수정을 위한 replyList에 이벤트 처리 추가...
+  replyList.addEventListener("click", function (e) {
+    e.preventDefault()
+    e.stopPropagation()
+
+    const target = e.target
+
+    if(!target || target.tagName != 'SPAN') {
+      return
+    }
+
+    const rno = target.getAttribute("data-rno")
+
+    if(!rno) {
+      return
+    }
+
+    getReply(rno).then(reply => {
+      console.log(reply)
+      replyHeader.innerHTML = reply.rno
+      modifyText.value = reply.replyText
+      modifyModal.show()
+    }).catch(e => alert('error'))
+  }, false)
+
 
 </script>
 
