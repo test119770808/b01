@@ -3,6 +3,7 @@ package org.zerock.b01.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -35,6 +36,7 @@ public class BoardController {
 
     }
 
+    @PreAuthorize("hasRole('USER')")  // ROLE_USER와 같은 의미...로 특정 권한 사용자만 접근 가능하도록 설정.
     @GetMapping("/register")
     public void registerGet() {
 
@@ -64,6 +66,7 @@ public class BoardController {
         return "redirect:/board/list";
     }
 
+    @PreAuthorize("hasRole('USER')")
     @GetMapping({"/read","/modify"})  //조회
     public void read(Long bno, PageRequestDTO pageRequestDTO, Model model) {
         BoardDTO boardDTO = boardService.readOne(bno);
@@ -71,6 +74,7 @@ public class BoardController {
         model.addAttribute("dto", boardDTO);
     }
 
+    @PreAuthorize("hasRole('USER')")
     @PostMapping("/modify")
     public String modify(PageRequestDTO pageRequestDTO,
                          @Valid BoardDTO boardDTO,
@@ -93,6 +97,7 @@ public class BoardController {
 
     }
 
+    @PreAuthorize("hasRole('USER')")
     @PostMapping("/remove")
     public String remove(Long bno, RedirectAttributes redirectAttributes) {
         log.info("remove post.... "+ bno);
