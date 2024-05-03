@@ -18,6 +18,9 @@
                 Login Page
             </div>
             <div class="card-body">
+                <th:block th:if="${param.logout != null}">
+                    <h1>Logout...........</h1>
+                </th:block>
                 <!-- form 태그의 action 속성은 "/member/login" 으로 동일한 경로에 POST방식으로 지정 -->
                 <form id="registerForm" action="/member/login" method="post">
                     <!-- username과 password로 name 속성값을 지정합니다. -->
@@ -28,6 +31,12 @@
                     <div class="input-group mb-3">
                         <span class="input-group-text">패스워드</span>
                         <input type="text" name="password" class="form-control" placeholder="PASSWORD">
+                    </div>
+                    <div class="input-group mb-3 ">
+                        <input class="form-check-input" type="checkbox" name="remember-me">
+                        <label class="form-check-label">
+                            자동로그인
+                        </label>
                     </div>
                     <div class="my-4">
                         <div class="float-end">
