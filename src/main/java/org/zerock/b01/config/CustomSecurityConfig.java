@@ -14,8 +14,10 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
+import org.zerock.b01.security.handler.Custom403Handler;
 
 
 import javax.sql.DataSource;
@@ -50,7 +52,18 @@ public class CustomSecurityConfig {
                    .tokenValiditySeconds(60*60*24*30);
         });
 
+        // exceptionHandler 설정
+        http.exceptionHandling(httpSecurityExceptionHandlingConfigurer -> {
+            httpSecurityExceptionHandlingConfigurer.accessDeniedHandler(accessDeniedHandler());
+        });
+
         return http.build();
+    }
+
+    // AccessDeniedHandler 빈등록...
+    @Bean
+    public AccessDeniedHandler accessDeniedHandler() {
+        return new Custom403Handler();
     }
 
     @Bean

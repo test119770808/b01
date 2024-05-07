@@ -74,7 +74,7 @@ public class BoardController {
         model.addAttribute("dto", boardDTO);
     }
 
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("principal.username == #boardDTO.writer")   //수정 처리는 게시물 작성자와 로그인한 사용자가 같은 경우...
     @PostMapping("/modify")
     public String modify(PageRequestDTO pageRequestDTO,
                          @Valid BoardDTO boardDTO,
@@ -97,11 +97,11 @@ public class BoardController {
 
     }
 
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("principal.username == #boardDTO.writer")
     @PostMapping("/remove")
-    public String remove(Long bno, RedirectAttributes redirectAttributes) {
-        log.info("remove post.... "+ bno);
-        boardService.remove(bno);
+    public String remove(BoardDTO boardDTO, RedirectAttributes redirectAttributes) {
+        log.info("remove post.... "+ boardDTO.getBno());
+        boardService.remove(boardDTO.getBno());
         redirectAttributes.addFlashAttribute("result","removed");
         return "redirect:/board/list";
     }
