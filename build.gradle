@@ -62,6 +62,8 @@ dependencies {
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0'
     implementation 'org.springframework.boot:spring-boot-starter-security'
 
+    // ThymeLeaf에서 스프링 시큐리티 사용하기 위한 라이브러리
+    implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6:3.1.2.RELEASE'
 
 }
 

@@ -66,7 +66,7 @@ public class BoardController {
         return "redirect:/board/list";
     }
 
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("isAuthenticated()")  // 인증된 사용자만 접근 가능...
     @GetMapping({"/read","/modify"})  //조회
     public void read(Long bno, PageRequestDTO pageRequestDTO, Model model) {
         BoardDTO boardDTO = boardService.readOne(bno);

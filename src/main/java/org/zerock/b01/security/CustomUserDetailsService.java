@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
 
-    private final PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;  // 주입하면 순환 구조가 발생함.
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
