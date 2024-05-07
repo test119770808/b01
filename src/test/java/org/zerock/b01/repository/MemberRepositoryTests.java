@@ -8,6 +8,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.zerock.b01.domain.Member;
 import org.zerock.b01.domain.MemberRole;
 
+import java.util.Optional;
 import java.util.stream.IntStream;
 
 @SpringBootTest
@@ -37,5 +38,14 @@ public class MemberRepositoryTests {
         });
     }
 
+    @Test
+    public void testRead() {
+        Optional<Member> result = memberRespository.getWithRoles("member100");
+        Member member = result.orElseThrow();
+
+        log.info(member);
+        log.info(member.getRoleSet());
+        member.getRoleSet().forEach(memberRole -> log.info(memberRole.name()));
+    }
 
 }
