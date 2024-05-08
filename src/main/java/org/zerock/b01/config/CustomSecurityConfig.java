@@ -2,6 +2,7 @@ package org.zerock.b01.config;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,9 +16,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.zerock.b01.security.handler.Custom403Handler;
+import org.zerock.b01.security.handler.CustomSocialLoginSuccessHandler;
 
 
 import javax.sql.DataSource;
@@ -59,10 +62,19 @@ public class CustomSecurityConfig {
 
         http.oauth2Login( httpSecurityOAuth2LoginConfigurer -> {
            httpSecurityOAuth2LoginConfigurer.loginPage("/member/login");
-//           httpSecurityOAuth2LoginConfigurer.successHandler()
+           httpSecurityOAuth2LoginConfigurer.successHandler(authenticationSuccessHandler());
         });
 
         return http.build();
+    }
+
+
+    private final PasswordEncoder passwordEncoder;  // 순환 참조로 인해서  passwordEncoder 삭제 후 ...
+    // PasswordEncoderConfig에 있는 passwordEncoder를 불러옴....
+
+    @Bean
+    public AuthenticationSuccessHandler authenticationSuccessHandler() {
+        return new CustomSocialLoginSuccessHandler(passwordEncoder);
     }
 
     // AccessDeniedHandler 빈등록...
